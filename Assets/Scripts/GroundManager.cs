@@ -22,8 +22,16 @@ public class GroundManager : MonoBehaviour
             Vector3 pz = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             pz.z = 0;
             Vector3Int cellPosition = grid.WorldToCell(pz);
-
+            var tile = tiles.GetTile(cellPosition);
+            Debug.Log("Tile name = " + tile.name);
             //tiles.SetTile(cellPosition, null);
         }
     }
+
+    public static GroundManager GetInstance()
+    {
+       return FindObjectOfType<GroundManager>();
+    }
+
+
 }
