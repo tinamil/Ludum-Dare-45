@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
 
     public SpriteRenderer selectionBoxIcon;
+    public Building[] buildings;
+    public Image[] selectionIcons;
 
     private SpriteRenderer mouseDragBox;
     private Vector2 mouseDown;
     private Vector2 mouseUp;
     private List<Peasant> selectedPeasants;
+
+
 
     void Start()
     {
@@ -20,15 +25,27 @@ public class GameManager : MonoBehaviour
         selectedPeasants = new List<Peasant>();
     }
 
+    public void StartBuilding(int index)
+    {
+        Instantiate(buildings[index]);
+    }
 
     void Update()
     {
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
-
             foreach (var peasant in selectedPeasants)
             {
                 peasant.SetSelected(false);
+            }
+            foreach (var icon in selectionIcons)
+            {
+                icon.color = Color.clear;
             }
             selectedPeasants.Clear();
 
@@ -47,7 +64,13 @@ public class GameManager : MonoBehaviour
                 if (peasant != null)
                 {
                     peasant.SetSelected(true);
+                    selectionIcons[selectedPeasants.Count].sprite = peasant.icon;
+                    selectionIcons[selectedPeasants.Count].color = Color.white;
                     selectedPeasants.Add(peasant);
+                    if (selectedPeasants.Count >= selectionIcons.Length)
+                    {
+                        break;
+                    }
                 }
             }
         }
@@ -63,9 +86,9 @@ public class GameManager : MonoBehaviour
         {
             Vector2 targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            foreach(var peasant in selectedPeasants)
+            foreach (var peasant in selectedPeasants)
             {
-                peasant.MoveTo(targetPosition);
+                peasant.InteractAt(targetPosition);
             }
         }
     }

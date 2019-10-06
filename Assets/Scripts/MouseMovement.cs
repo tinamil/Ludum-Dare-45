@@ -31,6 +31,10 @@ public class MouseMovement : MonoBehaviour
         }
         else
         {
+            if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
 
             //Do not move camera if mouse leaves screen
             if (Input.mousePosition.x < 0 || Input.mousePosition.y < 0 || Input.mousePosition.x > Screen.width || Input.mousePosition.y > Screen.height)
