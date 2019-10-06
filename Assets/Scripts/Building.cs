@@ -5,19 +5,42 @@ using UnityEngine;
 public class Building : MonoBehaviour
 {
 
+    public Collider2D collisionBox;
     public Animator animator;
+    public SpriteRenderer sprite;
+
     public float RequiredWork;
 
     private float CurrentWork = 0;
 
+    [SerializeField]
+    private bool ghost;
+
     void Start()
     {
-        
+      
     }
 
     void Update()
     {
+        if (ghost)
+        {
+            transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
+    }
 
+    public void SetGhost(bool active)
+    {
+        ghost = active;
+        //collisionBox.enabled = active;
+        if (active)
+        {
+            sprite.color = new Color(1, 1, 1, 0.5f);
+        }
+        else
+        {
+            sprite.color = Color.white;
+        }
     }
 
     public void BeginConstruction()

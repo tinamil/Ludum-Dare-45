@@ -44,8 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af42ab049ed807e4fb93004ec411ad93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionBox: {fileID: 7118713424670151414}
   animator: {fileID: 7118713424670151412}
+  sprite: {fileID: 7118713424670151413}
   RequiredWork: 10
+  ghost: 0
 --- !u!1 &7118713424670151408
 GameObject:
   m_ObjectHideFlags: 0

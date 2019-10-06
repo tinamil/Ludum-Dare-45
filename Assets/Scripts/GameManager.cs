@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     private Vector2 mouseUp;
     private List<Peasant> selectedPeasants;
 
-
+    private Building ghostBuilding;
 
     void Start()
     {
@@ -27,7 +27,11 @@ public class GameManager : MonoBehaviour
 
     public void StartBuilding(int index)
     {
-        Instantiate(buildings[index]);
+        if (ghostBuilding == null)
+        {
+            ghostBuilding = Instantiate(buildings[index]);
+            ghostBuilding.SetGhost(true);
+        }
     }
 
     void Update()
@@ -39,18 +43,29 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            foreach (var peasant in selectedPeasants)
+            //Placing Ghost Building
+            if (ghostBuilding != null)
             {
-                peasant.SetSelected(false);
+                ghostBuilding.SetGhost(false);
+                ghostBuilding = null;
             }
-            foreach (var icon in selectionIcons)
+            //Selection of peasants/building
+            else
             {
-                icon.color = Color.clear;
-            }
-            selectedPeasants.Clear();
 
-            mouseDown = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mouseDragBox.gameObject.SetActive(true);
+                foreach (var peasant in selectedPeasants)
+                {
+                    peasant.SetSelected(false);
+                }
+                foreach (var icon in selectionIcons)
+                {
+                    icon.color = Color.clear;
+                }
+                selectedPeasants.Clear();
+
+                mouseDown = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                mouseDragBox.gameObject.SetActive(true);
+            }
         }
 
         if (Input.GetMouseButtonUp(0))
